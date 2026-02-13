@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Will You Be My Valentine? 💖</title>
+  <title> Meowmie Will You Be My Valentine? 💖</title>
 
   <style>
     body {
@@ -48,7 +48,8 @@
     #noBtn {
       background-color: #888;
       color: white;
-      position: absolute;
+      position: fixed; /* important change */
+      transition: top 0.2s, left 0.2s;
     }
 
     #message {
@@ -93,12 +94,19 @@
   let yesScale = 1;
 
   function moveNoButton() {
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 60);
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+
+    const maxX = window.innerWidth - btnWidth - 20;
+    const maxY = window.innerHeight - btnHeight - 20;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
 
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 
+    // Make Yes button grow
     yesScale += 0.1;
     yesBtn.style.transform = "scale(" + yesScale + ")";
   }
@@ -106,7 +114,7 @@
   // Desktop hover
   noBtn.addEventListener("mouseover", moveNoButton);
 
-  // Mobile tap
+  // Mobile touch
   noBtn.addEventListener("touchstart", function(e) {
     e.preventDefault();
     moveNoButton();
@@ -137,3 +145,5 @@
 
 </body>
 </html>
+
+
