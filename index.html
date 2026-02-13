@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clarrel 💖</title>
+  <title>💖Clarrel💖</title>
 
   <style>
     body {
@@ -24,6 +24,11 @@
       padding: 0 20px;
     }
 
+    .buttons {
+      margin-top: 30px;
+      position: relative;
+    }
+
     button {
       font-size: 18px;
       padding: 15px 25px;
@@ -37,16 +42,14 @@
     #yesBtn {
       background-color: #ff4d88;
       color: white;
+      position: relative;
     }
 
     #noBtn {
       background-color: #888;
       color: white;
-      position: fixed;
-      left: 50%;
-      top: 60%;
-      transform: translate(-50%, -50%);
-      transition: all 0.25s ease; /* smooth slide */
+      position: fixed; /* important change */
+      transition: top 0.2s, left 0.2s;
     }
 
     #message {
@@ -76,8 +79,10 @@
 
   <h1>Meow Will You Be My Valentine? 💘</h1>
 
-  <button id="yesBtn">Yes 💖</button>
-  <button id="noBtn">No 😢</button>
+  <div class="buttons">
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 😢</button>
+  </div>
 
   <div id="message">Kiss him 😘💋</div>
 
@@ -88,61 +93,31 @@
 
   let yesScale = 1;
 
-  function moveAway(clientX, clientY) {
-    const rect = noBtn.getBoundingClientRect();
+  function moveNoButton() {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
 
-    const btnCenterX = rect.left + rect.width / 2;
-    const btnCenterY = rect.top + rect.height / 2;
+    const maxX = window.innerWidth - btnWidth - 20;
+    const maxY = window.innerHeight - btnHeight - 20;
 
-    // direction away from cursor
-    let dx = btnCenterX - clientX;
-    let dy = btnCenterY - clientY;
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
 
-    const distance = Math.sqrt(dx * dx + dy * dy) || 1;
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 
-    dx /= distance;
-    dy /= distance;
-
-    const moveDistance = 120; // how far it slides
-
-    let newX = rect.left + dx * moveDistance;
-    let newY = rect.top + dy * moveDistance;
-
-    // keep inside screen
-    const maxX = window.innerWidth - rect.width - 10;
-    const maxY = window.innerHeight - rect.height - 10;
-
-    newX = Math.max(10, Math.min(newX, maxX));
-    newY = Math.max(10, Math.min(newY, maxY));
-
-    noBtn.style.left = newX + "px";
-    noBtn.style.top = newY + "px";
-    noBtn.style.transform = "none";
-
-    // grow Yes button
+    // Make Yes button grow
     yesScale += 0.1;
     yesBtn.style.transform = "scale(" + yesScale + ")";
   }
 
   // Desktop hover
-  document.addEventListener("mousemove", (e) => {
-    const rect = noBtn.getBoundingClientRect();
+  noBtn.addEventListener("mouseover", moveNoButton);
 
-    const isNear =
-      e.clientX > rect.left - 50 &&
-      e.clientX < rect.right + 50 &&
-      e.clientY > rect.top - 50 &&
-      e.clientY < rect.bottom + 50;
-
-    if (isNear) {
-      moveAway(e.clientX, e.clientY);
-    }
-  });
-
-  // Mobile tap
+  // Mobile touch
   noBtn.addEventListener("touchstart", function(e) {
-    const touch = e.touches[0];
-    moveAway(touch.clientX, touch.clientY);
+    e.preventDefault();
+    moveNoButton();
   });
 
   yesBtn.addEventListener("click", function() {
@@ -161,13 +136,17 @@
 
       document.body.appendChild(confetti);
 
-      setTimeout(() => confetti.remove(), 3000);
+      setTimeout(() => {
+        confetti.remove();
+      }, 3000);
     }
   }
 </script>
 
 </body>
 </html>
+
+
 
 
 
